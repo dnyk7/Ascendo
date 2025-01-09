@@ -1,0 +1,5 @@
+pynput == 1.7.3
+uvicorn == 0.13.1
+pyserial == 3.5
+fastapi
+opencv-python fastapi
