@@ -10,29 +10,26 @@ app = FastAPI()
 async def root():
     return {"message": "Hello from Raspberry!"}
 
-@app.get("/about/")
-def about():
-    return HTMLResponse(
+@app.get("/video_feed_1")
+async def video_feed_1():
     """
-    <html>
-      <head>
-        <title>My Test API</title>
-      </head>
-      <body>
-        <div align="center">
-          <h1>My Test API</h1>
-        </div>
-      </body>
-    </html>
+    Endpoint to stream the first camera feed.
     """
-    )
+    return StreamingResponse(get_video_stream(0), media_type='multipart/x-mixed-replace; boundary=frame')
 
-@app.get("/video_feed")
-def video_feed():
+@app.get("/video_feed_2")
+async def video_feed_2():
     """
-    FastAPI endpoint to stream video frames.
+    Endpoint to stream the second camera feed.
     """
-    return StreamingResponse(get_video_stream(), media_type="multipart/x-mixed-replace; boundary=frame")
+    return StreamingResponse(get_video_stream(1), media_type='multipart/x-mixed-replace; boundary=frame')
+
+@app.get("/video_feed_3")
+async def video_feed_3():
+    """
+    Endpoint to stream the third camera feed.
+    """
+    return StreamingResponse(get_video_stream(2), media_type='multipart/x-mixed-replace; boundary=frame')
 
 @app.post("/move_forward")
 async def move_forward(request: Request):

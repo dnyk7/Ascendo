@@ -4,12 +4,13 @@ import cv2 # For OpenCV image processing
 # Alternatives: scikit-imgae, TensorFlow/Pytorch for image processing, etc.
 from typing import Generator
 
-def get_video_stream():
+def get_video_stream(camera_index: int) -> Generator[bytes, None, None]:
     """
     Function to capture video from the camera and yield frames for streaming.
     """
-    cap = cv2.VideoCapture(0)  # 0 usually refers to the default camera
+    cap = cv2.VideoCapture(camera_index)  # 0 usually refers to the default camera
 
+    # Reading Frames in a Loop
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -23,6 +24,9 @@ def get_video_stream():
         ret, encoded_frame = cv2.imencode('.jpg', frame)
         frame_bytes = encoded_frame.tobytes()
 
+        # yield makes the function a generator. 
+        # Each time a frame is processed into byte format, 
+        # the function will yield that frame as part of a multipart HTTP response.
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
