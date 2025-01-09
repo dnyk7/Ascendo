@@ -6,7 +6,7 @@ function CameraFeed() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/video_feed');
+        const response = await fetch('http://<raspberry_pi_ip>:5000/video_feed'); // Replace with Raspberry Pi IP
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
         setImage(imageUrl);
@@ -15,14 +15,24 @@ function CameraFeed() {
       }
     };
 
-    const intervalId = setInterval(fetchData, 100); // Update every 100ms
+    // Fetch every 100ms for near real-time updates
+    const intervalId = setInterval(fetchData, 100);
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   return (
-    <div>
-      {image && <img src={image} alt="Robot Camera Feed" />}
+    <div style={{ textAlign: "center" }}>
+      <h1>Robot Camera Feed</h1>
+      {image ? (
+        <img
+          src={image}
+          alt="Robot Camera Feed"
+          style={{ width: "80%", border: "1px solid black" }}
+        />
+      ) : (
+        <p>Loading camera feed...</p>
+      )}
     </div>
   );
 }

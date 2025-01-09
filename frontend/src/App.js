@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-
 import React from 'react';
-import MyComponent from './MyComponent';
+import CameraFeed from './CameraFeed';
+
 
 function App() {
   return (
     <div className="App">
+      <CameraFeed />
+
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -18,10 +20,8 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
         </a>
       </header>
-      <MyComponent />
     </div>
   );
 }
